@@ -18,8 +18,16 @@
  */
 
 const React = require('react');
-const RN = require('react-native');
-const FlatList = require('./FlatListStub.web.js');
+// NOTE: react-native and FlatListStub are required LAZILY (inside functions)
+// to avoid creating circular dependencies during react-native-web's module init.
+// Top-level require('react-native') here would pull in react-native-web while
+// it is still initialising → Metro creates a lazy getter for FlatList → crash.
+
+// ---------------------------------------------------------------------------
+// Lazy helpers — only evaluated when a component actually renders/calls
+// ---------------------------------------------------------------------------
+function getRN() { return require('react-native'); }
+function getFlatList() { return require('./FlatListStub.web.js'); }
 
 // ---------------------------------------------------------------------------
 // Shared values — simple ref-backed so reads/writes work without native engine
@@ -113,12 +121,13 @@ const Extrapolation = {
 // ---------------------------------------------------------------------------
 const createAnimatedComponent = (Component) => Component;
 
+// Animated.View etc. are lazy to avoid triggering react-native-web's init cycle
 const Animated = {
-  View:       RN.View,
-  ScrollView: RN.ScrollView,
-  Text:       RN.Text,
-  Image:      RN.Image,
-  FlatList,
+  get View()       { return getRN().View; },
+  get ScrollView() { return getRN().ScrollView; },
+  get Text()       { return getRN().Text; },
+  get Image()      { return getRN().Image; },
+  get FlatList()   { return getFlatList(); },
   createAnimatedComponent,
 };
 
@@ -163,7 +172,7 @@ const stub = {
   // Components
   createAnimatedComponent,
   Animated,
-  FlatList,
+  get FlatList() { return getFlatList(); },
 
   // Worklet internals (Babel plugin may inject imports for these)
   makeRemote,

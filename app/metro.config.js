@@ -34,6 +34,18 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
     return { type: 'sourceFile', filePath: PRETTY_FORMAT_SHIM }
   }
 
+  // react-native-css (NativeWind's webResolver) intercepts react-native-web's
+  // FlatList/SectionList and redirects to its own wrappers. Those wrappers access
+  // require('react-native').FlatList at module init time, which hits a partially-
+  // initialized react-native-web CJS index and crashes. Block them on web.
+  if (platform === 'web' && (
+    moduleName === 'react-native-css/components/FlatList' ||
+    moduleName === 'react-native-css/components/SectionList' ||
+    moduleName === 'react-native-css/components/VirtualizedList'
+  )) {
+    return { type: 'sourceFile', filePath: FLATLIST_STUB }
+  }
+
   // react-native-css (used by NativeWind's withNativewind) has a webResolver that
   // intercepts react-native-web/dist/cjs/exports/FlatList/index.js and redirects
   // it to react-native-css/components/FlatList.js. That component does
