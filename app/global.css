@@ -1,7 +1,10 @@
 /* Declare rnw layer first so react-native-web base styles have the lowest cascade priority */
 @layer rnw;
 
-@import "tailwindcss";
+/* NativeWind v5: use split imports instead of @import "tailwindcss" for better react-native-web compatibility */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
 @import "nativewind/theme";
 
 @theme {
