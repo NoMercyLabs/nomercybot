@@ -1,4 +1,4 @@
-# NomercyBot — AI Assistant Context
+# NomNomzBot — AI Assistant Context
 
 An open-source, multi-tenant Twitch bot platform. One deployment supports unlimited channels — each
 streamer gets a full isolated dashboard, pipeline editor, custom commands, event responses, timers,
@@ -10,10 +10,10 @@ Licensed under **AGPL-3.0**. Copyright (C) NoMercy Entertainment.
 
 ## Critical Rules — Read First
 
-- **Namespace is `NomercyBot.*`** — never write `NoMercyBot.*` (capital M). This is always wrong.
+- **Namespace is `NomNomzBot.*`** — never write `NoMercyBot.*` (capital M). This is always wrong.
 - **Username is `Stoney_Eagle`** — underscore, not hyphen. Never change this.
 - **Figma is the source of truth for design** — file key `MkKBuW2Ee6T5jC8fCtZsM0`. When in doubt, Figma wins over HTML mockups.
-- **HTML mockups at `nomercybot-design/mockups/`** are a reference implementation of the Figma designs.
+- **HTML mockups at `nomnomzbot-design/mockups/`** are a reference implementation of the Figma designs.
 - **No `Co-Authored-By` in git commits** — ever.
 - **No MediatR** — services are called directly via typed interfaces registered in DI.
 - **No Roslyn** — don't use Roslyn for code generation or analysis.
@@ -31,21 +31,21 @@ Licensed under **AGPL-3.0**. Copyright (C) NoMercy Entertainment.
 
 ```
 NoMercyLabs/
-├── nomercybot-server/       # Backend — .NET 10, PostgreSQL, Redis
+├── nomnomzbot-server/       # Backend — .NET 10, PostgreSQL, Redis
 │   ├── src/
-│   │   ├── NomercyBot.Domain/          # Entities, domain events, value objects, interfaces
-│   │   ├── NomercyBot.Application/     # Use cases, services, pipeline engine, IEventBus
-│   │   ├── NomercyBot.Infrastructure/  # EF Core, Twitch services, EventSub, SignalR
-│   │   └── NomercyBot.Api/             # ASP.NET Core host, controllers, hubs, middleware
+│   │   ├── NomNomzBot.Domain/          # Entities, domain events, value objects, interfaces
+│   │   ├── NomNomzBot.Application/     # Use cases, services, pipeline engine, IEventBus
+│   │   ├── NomNomzBot.Infrastructure/  # EF Core, Twitch services, EventSub, SignalR
+│   │   └── NomNomzBot.Api/             # ASP.NET Core host, controllers, hubs, middleware
 │   ├── tests/
-│   │   ├── NomercyBot.Domain.Tests/
-│   │   ├── NomercyBot.Application.Tests/
-│   │   ├── NomercyBot.Infrastructure.Tests/
-│   │   └── NomercyBot.Api.Tests/
+│   │   ├── NomNomzBot.Domain.Tests/
+│   │   ├── NomNomzBot.Application.Tests/
+│   │   ├── NomNomzBot.Infrastructure.Tests/
+│   │   └── NomNomzBot.Api.Tests/
 │   ├── docker-compose.yml
 │   ├── .env                 # Created from .env.example; not committed
 │   └── .env.example
-├── nomercybot-app/          # Frontend — Expo (React Native), web + iOS + Android
+├── nomnomzbot-app/          # Frontend — Expo (React Native), web + iOS + Android
 │   ├── app/                 # Expo Router file-based routes
 │   ├── features/            # Feature modules with co-located business logic
 │   ├── components/          # Shared UI components
@@ -54,7 +54,7 @@ NoMercyLabs/
 │   ├── lib/                 # HTTP client, utilities
 │   ├── .env.development
 │   └── .env.production
-└── nomercybot-design/       # HTML mockups, research docs, architecture specs
+└── nomnomzbot-design/       # HTML mockups, research docs, architecture specs
     ├── mockups/             # HTML reference implementations of Figma designs
     └── research/            # Architecture decisions, API research, design system docs
 ```
@@ -94,10 +94,10 @@ All three directories are git submodules inside the `NoMercyLabs` monorepo.
 Dependencies flow **inward only**. Domain knows nothing about the outside world.
 
 ```
-NomercyBot.Api             → Controllers, Hubs, Middleware, JWT, SignalR
-NomercyBot.Infrastructure  → EF Core, Twitch/Spotify/Discord/TTS services
-NomercyBot.Application     → Use cases, service interfaces, pipeline engine, IEventBus
-NomercyBot.Domain          → Entities, domain events, value objects, no external deps
+NomNomzBot.Api             → Controllers, Hubs, Middleware, JWT, SignalR
+NomNomzBot.Infrastructure  → EF Core, Twitch/Spotify/Discord/TTS services
+NomNomzBot.Application     → Use cases, service interfaces, pipeline engine, IEventBus
+NomNomzBot.Domain          → Entities, domain events, value objects, no external deps
 ```
 
 ### Key Design Decisions
@@ -173,11 +173,11 @@ Frontend connects via `@microsoft/signalr`. Auth token passed as `?access_token=
 
 ```bash
 # Start infrastructure (first time and after docker restart)
-cd nomercybot
+cd nomnomzbot
 docker-compose up -d postgres redis adminer
 
 # Run API locally (auto-migrates, auto-seeds on first start)
-cd src/NomercyBot.Api
+cd src/NomNomzBot.Api
 dotnet run
 ```
 
@@ -196,9 +196,9 @@ Local dev URLs:
 ### Running Tests
 
 ```bash
-cd nomercybot
+cd nomnomzbot
 dotnet test                                    # all projects
-dotnet test tests/NomercyBot.Domain.Tests      # one project
+dotnet test tests/NomNomzBot.Domain.Tests      # one project
 ```
 
 ---
@@ -285,7 +285,7 @@ Use the `useBreakpoint()` hook — never hardcode pixel checks.
 ### Running the Frontend
 
 ```bash
-cd nomercybot-app
+cd nomnomzbot-app
 yarn install          # first time only
 yarn web              # opens http://localhost:8081
 yarn ios              # requires Xcode (macOS only)
@@ -390,15 +390,15 @@ A shared dev tunnel at `bot-dev-api.nomercy.tv` is pre-configured in `appsetting
 
 ## Environment Variables
 
-### Backend — `nomercybot/.env`
+### Backend — `nomnomzbot/.env`
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `POSTGRES_USER` | no | `nomercybot` | PostgreSQL username |
-| `POSTGRES_PASSWORD` | prod: yes | `nomercybot_dev` | PostgreSQL password |
+| `POSTGRES_USER` | no | `nomnomzbot` | PostgreSQL username |
+| `POSTGRES_PASSWORD` | prod: yes | `nomnomzbot_dev` | PostgreSQL password |
 | `JWT_SECRET` | prod: yes | `dev-secret-key-at-least-32-characters-long!!` | JWT signing key (≥32 chars). Generate: `openssl rand -base64 32` |
-| `JWT_ISSUER` | no | `nomercybot` | JWT issuer claim |
-| `JWT_AUDIENCE` | no | `nomercybot` | JWT audience claim |
+| `JWT_ISSUER` | no | `nomnomzbot` | JWT issuer claim |
+| `JWT_AUDIENCE` | no | `nomnomzbot` | JWT audience claim |
 | `ENCRYPTION_KEY` | prod: yes | `ZGV2...` (base64) | AES key for OAuth token storage. Generate: `openssl rand -base64 32`. **Changing this invalidates all stored tokens.** |
 | `TWITCH_CLIENT_ID` | **yes** | — | From Twitch Developer Console |
 | `TWITCH_CLIENT_SECRET` | **yes** | — | From Twitch Developer Console |
@@ -421,7 +421,7 @@ A shared dev tunnel at `bot-dev-api.nomercy.tv` is pre-configured in `appsetting
 
 For local `dotnet run` dev (not Docker): put Twitch credentials in `appsettings.Development.json` instead. All other settings fall back to `appsettings.json` defaults.
 
-### Frontend — `nomercybot-app/.env.development`
+### Frontend — `nomnomzbot-app/.env.development`
 
 | Variable | Required | Description |
 |----------|----------|-------------|
@@ -434,7 +434,7 @@ For local `dotnet run` dev (not Docker): put Twitch credentials in `appsettings.
 ```json
 {
   "ConnectionStrings": { "DefaultConnection": "...", "Redis": "..." },
-  "Jwt": { "Secret": "", "Issuer": "nomercybot", "Audience": "nomercybot", "ExpiryMinutes": 60 },
+  "Jwt": { "Secret": "", "Issuer": "nomnomzbot", "Audience": "nomnomzbot", "ExpiryMinutes": 60 },
   "Encryption": { "Key": "" },
   "Twitch": { "ClientId": "", "ClientSecret": "", "BotUsername": "", "RedirectUri": "", "BotRedirectUri": "", "ChannelBotRedirectUri": "" },
   "Spotify": { "ClientId": "", "ClientSecret": "" },
@@ -452,10 +452,10 @@ For local `dotnet run` dev (not Docker): put Twitch credentials in `appsettings.
 
 ### Adding a New API Endpoint
 
-1. Define interface in `NomercyBot.Application/Common/Interfaces/`
-2. Implement in `NomercyBot.Infrastructure/Services/`
+1. Define interface in `NomNomzBot.Application/Common/Interfaces/`
+2. Implement in `NomNomzBot.Infrastructure/Services/`
 3. Register in `InfrastructureServiceExtensions.cs`
-4. Create controller in `NomercyBot.Api/Controllers/` with `[ApiVersion("1.0")]` and `[Route("api/v{version:apiVersion}/...")]`
+4. Create controller in `NomNomzBot.Api/Controllers/` with `[ApiVersion("1.0")]` and `[Route("api/v{version:apiVersion}/...")]`
 5. Return `StatusResponseDto<T>` or `PaginatedResponse<T>`
 
 ### Adding a New Dashboard Page
@@ -484,10 +484,10 @@ For local `dotnet run` dev (not Docker): put Twitch credentials in `appsettings.
 
 ### Adding a New Pipeline Action
 
-1. Create class in `NomercyBot.Infrastructure/Pipeline/Actions/` implementing `ICommandAction`
+1. Create class in `NomNomzBot.Infrastructure/Pipeline/Actions/` implementing `ICommandAction`
 2. Set `Type` property to a unique snake_case string
 3. Register in `InfrastructureServiceExtensions`
-4. Add DTO to `NomercyBot.Application/Contracts/Pipeline/`
+4. Add DTO to `NomNomzBot.Application/Contracts/Pipeline/`
 5. Add action card to pipeline builder UI in `app/(dashboard)/pipelines/`
 
 ---
@@ -513,7 +513,7 @@ All action blocks are compiled C# classes — no scripting engine.
 - Accent: Twitch purple `#9146FF`
 - Text: `#ffffff` (primary), `#a0a0b0` (muted)
 - 56 components, 28 desktop pages, 12 modals documented in Figma
-- HTML mockups at `nomercybot-design/mockups/` are reference implementations — cross-reference when Figma intent is unclear, but Figma takes precedence
+- HTML mockups at `nomnomzbot-design/mockups/` are reference implementations — cross-reference when Figma intent is unclear, but Figma takes precedence
 
 ---
 
@@ -563,4 +563,4 @@ After completion, lands on `/` (dashboard home).
 - Conventional commit messages preferred (`feat:`, `fix:`, `chore:`, etc.)
 - Main branch: `main`
 - Feature branches: `feat/description` or `fix/description`
-- Each submodule (`nomercybot`, `nomercybot-app`, `nomercybot-design`) has its own git history
+- Each submodule (`nomnomzbot`, `nomnomzbot-app`, `nomnomzbot-design`) has its own git history

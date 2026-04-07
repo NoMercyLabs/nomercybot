@@ -1,4 +1,4 @@
-# NomercyBot
+# NomNomzBot
 
 An open-source, multi-tenant Twitch bot platform. One deployment supports unlimited channels — each streamer gets a full isolated dashboard, pipeline editor, custom commands, event responses, timers, overlays, and integrations (Spotify, Discord, YouTube, TTS).
 
@@ -9,21 +9,21 @@ Licensed under **AGPL-3.0**. Self-hosted deployments have zero restrictions.
 ## Repository Layout
 
 ```
-nomercybot/                            # Primary monorepo (this repo)
-├── nomercybot-server/    # Backend — .NET 10, PostgreSQL, Redis  [submodule]
+nomnomzbot/                            # Primary monorepo (this repo)
+├── nomnomzbot-server/    # Backend — .NET 10, PostgreSQL, Redis  [submodule]
 │   ├── src/
-│   │   ├── NomercyBot.Domain/          # Entities, domain events, value objects
-│   │   ├── NomercyBot.Application/     # Use cases, interfaces, pipeline engine
-│   │   ├── NomercyBot.Infrastructure/  # EF Core, Twitch services, EventSub, SignalR
-│   │   └── NomercyBot.Api/             # ASP.NET Core host, controllers, hubs
+│   │   ├── NomNomzBot.Domain/          # Entities, domain events, value objects
+│   │   ├── NomNomzBot.Application/     # Use cases, interfaces, pipeline engine
+│   │   ├── NomNomzBot.Infrastructure/  # EF Core, Twitch services, EventSub, SignalR
+│   │   └── NomNomzBot.Api/             # ASP.NET Core host, controllers, hubs
 │   ├── tests/                          # xUnit test projects (one per layer)
 │   ├── docker-compose.yml
 │   └── .env.example
-├── nomercybot-app/       # Frontend — Expo (React Native), web + iOS + Android  [submodule]
+├── nomnomzbot-app/       # Frontend — Expo (React Native), web + iOS + Android  [submodule]
 │   ├── app/              # Expo Router file-based routes
 │   ├── .env.development
 │   └── .env.production
-└── nomercybot-design/    # HTML mockups, research docs, architecture specs  [submodule]
+└── nomnomzbot-design/    # HTML mockups, research docs, architecture specs  [submodule]
 ```
 
 ---
@@ -73,22 +73,22 @@ nomercybot/                            # Primary monorepo (this repo)
 
 ## Environment Setup
 
-### Backend — `nomercybot-server/.env`
+### Backend — `nomnomzbot-server/.env`
 
 Copy the example file and fill in values:
 
 ```bash
-cd nomercybot-server
+cd nomnomzbot-server
 cp .env.example .env
 ```
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `POSTGRES_USER` | no | `nomercybot` | PostgreSQL username |
-| `POSTGRES_PASSWORD` | **yes** for production | `nomercybot_dev` | PostgreSQL password |
+| `POSTGRES_USER` | no | `nomnomzbot` | PostgreSQL username |
+| `POSTGRES_PASSWORD` | **yes** for production | `nomnomzbot_dev` | PostgreSQL password |
 | `JWT_SECRET` | **yes** for production | `dev-secret-key-at-least-32-characters-long!!` | Signing key — must be ≥ 32 characters. Generate with `openssl rand -base64 32` |
-| `JWT_ISSUER` | no | `nomercybot` | JWT issuer claim |
-| `JWT_AUDIENCE` | no | `nomercybot` | JWT audience claim |
+| `JWT_ISSUER` | no | `nomnomzbot` | JWT issuer claim |
+| `JWT_AUDIENCE` | no | `nomnomzbot` | JWT audience claim |
 | `ENCRYPTION_KEY` | **yes** for production | `ZGV2...` (base64) | AES key for storing OAuth tokens. Generate with `openssl rand -base64 32` |
 | `TWITCH_CLIENT_ID` | **yes** | — | From your Twitch app |
 | `TWITCH_CLIENT_SECRET` | **yes** | — | From your Twitch app |
@@ -109,9 +109,9 @@ cp .env.example .env
 | `REDIS_PORT` | no | `6379` | Host port for Redis |
 | `ADMINER_PORT` | no | `8082` | Host port for Adminer (DB browser) |
 
-> For **`dotnet run` local dev** (not Docker), Twitch credentials go in `nomercybot-server/src/NomercyBot.Api/appsettings.Development.json` instead. All other settings fall back to defaults from `appsettings.json`.
+> For **`dotnet run` local dev** (not Docker), Twitch credentials go in `nomnomzbot-server/src/NomNomzBot.Api/appsettings.Development.json` instead. All other settings fall back to defaults from `appsettings.json`.
 
-### Frontend — `nomercybot-app/.env.development`
+### Frontend — `nomnomzbot-app/.env.development`
 
 | Variable | Required | Description |
 |----------|----------|-------------|
@@ -125,8 +125,8 @@ cp .env.example .env
 ### 1. Clone
 
 ```bash
-git clone --recursive git@github.com:NoMercyLabs/nomercybot.git
-cd nomercybot
+git clone --recursive git@github.com:NoMercyLabs/nomnomzbot.git
+cd nomnomzbot
 ```
 
 ### 2. Start Infrastructure (Postgres + Redis)
@@ -134,7 +134,7 @@ cd nomercybot
 For local development you only need Postgres and Redis — skip the `api` container and run the API with `dotnet run` instead:
 
 ```bash
-cd nomercybot-server
+cd nomnomzbot-server
 docker-compose up -d postgres redis adminer
 ```
 
@@ -151,7 +151,7 @@ docker-compose ps   # both should show "healthy"
 ### 3. Backend Setup
 
 ```bash
-cd nomercybot-server/src/NomercyBot.Api
+cd nomnomzbot-server/src/NomNomzBot.Api
 ```
 
 For local dev without Docker, edit `appsettings.Development.json` with your Twitch credentials (or use the pre-filled dev credentials):
@@ -192,7 +192,7 @@ The API is now available at:
 ### 4. Frontend Setup
 
 ```bash
-cd nomercybot-app
+cd nomnomzbot-app
 yarn install
 ```
 
@@ -256,7 +256,7 @@ If you only want to develop backend features without Twitch login, you can call 
 To run everything in Docker:
 
 ```bash
-cd nomercybot-server
+cd nomnomzbot-server
 cp .env.example .env
 # Fill in all required values in .env
 docker-compose up -d
@@ -271,10 +271,10 @@ This builds and runs the API container alongside Postgres, Redis, and Adminer. T
 ### Backend — Clean Architecture
 
 ```
-NomercyBot.Domain          → Entities, domain events, value objects, interfaces
-NomercyBot.Application     → Use cases (services), pipeline engine, IEventBus
-NomercyBot.Infrastructure  → EF Core, Twitch services, Spotify/Discord/TTS providers
-NomercyBot.Api             → ASP.NET Core host, JWT auth, SignalR hubs, controllers
+NomNomzBot.Domain          → Entities, domain events, value objects, interfaces
+NomNomzBot.Application     → Use cases (services), pipeline engine, IEventBus
+NomNomzBot.Infrastructure  → EF Core, Twitch services, Spotify/Discord/TTS providers
+NomNomzBot.Api             → ASP.NET Core host, JWT auth, SignalR hubs, controllers
 ```
 
 No MediatR. Services are called directly via typed interfaces registered in DI.
@@ -320,17 +320,17 @@ Template strings support 90+ variables: `{{user.name}}`, `{{channel.title}}`, `{
 ### Running Tests
 
 ```bash
-cd nomercybot-server
+cd nomnomzbot-server
 dotnet test                          # run all test projects
-dotnet test tests/NomercyBot.Domain.Tests
-dotnet test tests/NomercyBot.Application.Tests
-dotnet test tests/NomercyBot.Infrastructure.Tests
-dotnet test tests/NomercyBot.Api.Tests
+dotnet test tests/NomNomzBot.Domain.Tests
+dotnet test tests/NomNomzBot.Application.Tests
+dotnet test tests/NomNomzBot.Infrastructure.Tests
+dotnet test tests/NomNomzBot.Api.Tests
 ```
 
 Frontend tests:
 ```bash
-cd nomercybot-app
+cd nomnomzbot-app
 yarn test
 ```
 
@@ -346,7 +346,7 @@ yarn lint
 
 ### Adding a New Pipeline Action
 
-1. Create a class in `NomercyBot.Infrastructure/Pipeline/Actions/` implementing `ICommandAction`:
+1. Create a class in `NomNomzBot.Infrastructure/Pipeline/Actions/` implementing `ICommandAction`:
    ```csharp
    public sealed class MyNewAction : ICommandAction
    {
@@ -355,14 +355,14 @@ yarn lint
    }
    ```
 2. Register it in `InfrastructureServiceExtensions` with the other pipeline actions.
-3. Add the corresponding DTO to `NomercyBot.Application/Contracts/Pipeline/`.
-4. Add a card to the pipeline builder UI in `nomercybot-app/app/(dashboard)/pipelines/`.
+3. Add the corresponding DTO to `NomNomzBot.Application/Contracts/Pipeline/`.
+4. Add a card to the pipeline builder UI in `nomnomzbot-app/app/(dashboard)/pipelines/`.
 
 ### Adding a New API Endpoint
 
-1. Add a use-case service interface in `NomercyBot.Application/Common/Interfaces/`.
-2. Implement it in `NomercyBot.Infrastructure/Services/`.
-3. Create a controller in `NomercyBot.Api/Controllers/` using `[ApiVersion("1.0")]` and `[Route("api/v{version:apiVersion}/...")]`.
+1. Add a use-case service interface in `NomNomzBot.Application/Common/Interfaces/`.
+2. Implement it in `NomNomzBot.Infrastructure/Services/`.
+3. Create a controller in `NomNomzBot.Api/Controllers/` using `[ApiVersion("1.0")]` and `[Route("api/v{version:apiVersion}/...")]`.
 4. All responses follow `StatusResponseDto<T>` / `PaginatedResponse<T>` shapes (see existing controllers for reference).
 
 ### Code Style
@@ -381,7 +381,7 @@ yarn lint
 
 **For native device builds via EAS** (`eas build`):
 1. Create an account at [expo.dev](https://expo.dev/)
-2. Run `eas init` in `nomercybot-app/` to link the project
+2. Run `eas init` in `nomnomzbot-app/` to link the project
 3. Set `EXPO_PUBLIC_PROJECT_ID` in `.env.development` (and `.env.production`) to the ID shown in the Expo dashboard
 4. For production, set the API URL as an EAS secret instead of committing it:
    ```bash
