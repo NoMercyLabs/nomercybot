@@ -4,6 +4,7 @@ const { withNativewind } = require('nativewind/metro')
 
 const FLATLIST_STUB = path.resolve(__dirname, 'scripts/FlatListStub.web.js')
 const GESTURE_HANDLER_STUB = path.resolve(__dirname, 'scripts/gesture-handler-stub.web.js')
+const REANIMATED_STUB = path.resolve(__dirname, 'scripts/reanimated-web-stub.js')
 
 const config = getDefaultConfig(__dirname)
 
@@ -31,6 +32,18 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
   // pretty-format → shim with correct default export
   if (moduleName === 'pretty-format') {
     return { type: 'sourceFile', filePath: PRETTY_FORMAT_SHIM }
+  }
+
+  // react-native-reanimated@4.x accesses { FlatList } from 'react-native' at
+  // module init (ReanimatedFlatList wrapper). react-native-web@0.21.x no
+  // longer ships FlatList — its getter returns `_FlatList.default` where
+  // `_FlatList` is undefined, crashing the bundle before anything renders.
+  // On web, redirect every reanimated import to a safe no-op stub.
+  if (platform === 'web' && (
+    moduleName === 'react-native-reanimated' ||
+    moduleName.startsWith('react-native-reanimated/')
+  )) {
+    return { type: 'sourceFile', filePath: REANIMATED_STUB }
   }
 
   // react-native-gesture-handler on web pulls in reanimated which triggers the broken
