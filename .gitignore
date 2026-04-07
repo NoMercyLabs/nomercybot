@@ -11,10 +11,13 @@
 !setup.mjs
 !package.json
 !LICENSE
+!docker-compose.yml
+!.env.example
+!deploy.sh
+!deploy.ps1
 
 # Submodules (git handles these automatically via .gitmodules)
-!nomercybot-server
-!nomercybot-server/README.md
-!nomercybot-app
-!nomercybot-app/README.md
-!nomercybot-design
+!nomnomzbot-server
+!nomnomzbot-server/README.md
+!nomnomzbot-app
+!nomnomzbot-app/README.md

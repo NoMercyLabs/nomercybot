@@ -1,90 +1,122 @@
 # NomNomzBot — Deployment Guide
 
-## Deployment Modes
+## Server requirements
 
-NomNomzBot supports two modes:
-- **Self-hosted** — you run it on your own server, for yourself or a small community
-- **Hosted SaaS** — multi-tenant, many streamers share one deployment (see Security Architecture for requirements)
+**Only Docker is required.** No .NET SDK, no Node.js, no Yarn, no build tools.
+The API and frontend both build inside multi-stage Docker containers.
 
-For most people, self-hosted is what you want.
-
-## Quick Self-Host (Recommended: Docker + Caddy)
-
-### What you need
-- A Linux server (Ubuntu 22.04 LTS recommended)
-- Docker + Docker Compose v2
-- A domain name pointed at your server
+- Linux server (Ubuntu 22.04 LTS recommended)
+- Docker + Docker Compose v2 — `deploy.sh` installs these if missing
+- A domain name (for TLS + Twitch OAuth)
 - A Twitch Developer Application
 
-### Steps
+---
 
-1. Clone the monorepo:
+## Deployment Modes
+
+- **Self-hosted** — you run it on your own server, for yourself or a small community
+- **Hosted SaaS** — multi-tenant, many streamers share one deployment
+
+Set `DEPLOYMENT_MODE=self-hosted` (default) or `DEPLOYMENT_MODE=saas` in `.env`.
+
+---
+
+## Quick Deploy
+
+### Linux / macOS
+
+```bash
+git clone --recursive https://github.com/NoMercyLabs/nomnomzbot.git
+cd nomnomzbot
+chmod +x deploy.sh
+./deploy.sh
+```
+
+### Windows
+
+```powershell
+git clone --recursive https://github.com/NoMercyLabs/nomnomzbot.git
+cd nomnomzbot
+.\deploy.ps1
+```
+
+Both scripts:
+1. Check for Docker, offer to install if missing
+2. Generate `JWT_SECRET`, `ENCRYPTION_KEY`, `POSTGRES_PASSWORD`, `REDIS_PASSWORD` via `openssl rand`
+3. Prompt for `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`, `API_BASE_URL`
+4. Run `docker compose up -d --build`
+5. Wait for the health check and print your URLs + Twitch redirect URIs
+
+---
+
+## Manual deploy (without the script)
+
+1. Clone:
    ```bash
    git clone --recursive https://github.com/NoMercyLabs/nomnomzbot.git
-   cd nomnomzbot/nomnomzbot-server
+   cd nomnomzbot
    ```
 
-2. Copy and fill in the environment file:
+2. Create `.env`:
    ```bash
    cp .env.example .env
    ```
-   Required variables: `POSTGRES_PASSWORD`, `JWT_SECRET`, `ENCRYPTION_KEY`, `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`, `TWITCH_BOT_USERNAME`
-
    Generate secrets:
    ```bash
-   openssl rand -base64 32   # use output for JWT_SECRET
-   openssl rand -base64 32   # use output for ENCRYPTION_KEY
+   openssl rand -base64 64   # → JWT_SECRET
+   openssl rand -base64 32   # → ENCRYPTION_KEY
+   openssl rand -hex 32      # → POSTGRES_PASSWORD
+   openssl rand -hex 32      # → REDIS_PASSWORD
    ```
+   Fill in `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`, and `API_BASE_URL`.
 
-3. Set your domain in `APP_BASE_URL`:
-   ```env
-   APP_BASE_URL=https://bot.yourdomain.com
-   ```
-
-4. Set up Caddy as reverse proxy (handles TLS automatically):
-   ```
-   # /etc/caddy/Caddyfile
-   bot.yourdomain.com {
-       reverse_proxy localhost:5080
-   }
-   ```
-
-5. Start everything:
+3. Start:
    ```bash
-   docker compose up -d
+   docker compose up -d --build
    ```
 
-6. Register redirect URIs in your Twitch Developer Console. They are **computed from `APP_BASE_URL`** — no separate config needed. The three paths are:
+4. Register Twitch redirect URIs — computed from `API_BASE_URL` automatically:
    ```
-   {APP_BASE_URL}/api/v1/auth/twitch/callback
-   {APP_BASE_URL}/api/v1/auth/twitch/bot/callback
-   {APP_BASE_URL}/api/v1/channels/callback/bot
+   {API_BASE_URL}/api/v1/auth/twitch/callback
+   {API_BASE_URL}/api/v1/auth/twitch/bot/callback
+   {API_BASE_URL}/api/v1/channels/callback/bot
    ```
-   Example for `APP_BASE_URL=https://bot.yourdomain.com`:
-   ```
-   https://bot.yourdomain.com/api/v1/auth/twitch/callback
-   https://bot.yourdomain.com/api/v1/auth/twitch/bot/callback
-   https://bot.yourdomain.com/api/v1/channels/callback/bot
-   ```
-   > **Active dev domain:** The shared dev credentials use `bot-dev-api.nomercy.tv` as the base URL. `api.nomnomz.bot` is the planned production domain — will replace this once fully configured.
 
-The API starts on `http://localhost:5080`. Caddy handles TLS and proxies requests.
+---
+
+## Reverse proxy (TLS)
+
+Twitch OAuth requires HTTPS. Point Caddy or nginx at the containers:
+
+```
+# /etc/caddy/Caddyfile
+api.yourdomain.com {
+    reverse_proxy localhost:5080
+}
+yourdomain.com {
+    reverse_proxy localhost:8081
+}
+```
+
+Then set in `.env`:
+```env
+API_BASE_URL=https://api.yourdomain.com
+FRONTEND_URL=https://yourdomain.com
+```
+
+---
 
 ## Updating
 
 ```bash
 cd nomnomzbot
 git pull --recurse-submodules
-cd nomnomzbot-server
-docker compose pull
-docker compose up -d
+docker compose up -d --build
 ```
 
-Migrations run automatically on startup. No manual migration commands needed.
+Migrations run automatically on startup.
 
-## Environment Variable Reference
-
-See the full table in the root [README.md](README.md#environment-setup).
+---
 
 ## Health Checks
 
@@ -98,35 +130,40 @@ See the full table in the root [README.md](README.md#environment-setup).
 
 | Port | Service |
 |---|---|
-| `5080` | API (HTTP — proxy behind Caddy/nginx) |
-| `5432` | PostgreSQL (internal Docker network only) |
-| `6379` | Redis (internal Docker network only) |
-| `8082` | Adminer DB browser (internal only — do not expose) |
+| `5080` | API |
+| `8081` | Web frontend |
+| `5432` | PostgreSQL (internal only) |
+| `6379` | Redis (internal only) |
+| `8082` | Adminer DB browser (internal only) |
 
 **Never expose ports 5432, 6379, or 8082 to the internet.**
 
+---
+
 ## Security Checklist
 
-Before going live:
 - [ ] `POSTGRES_PASSWORD` is not the default `nomnomzbot_dev`
-- [ ] `JWT_SECRET` is at least 32 characters and randomly generated
-- [ ] `ENCRYPTION_KEY` is 32 bytes, base64-encoded, randomly generated
-- [ ] API is behind TLS (Caddy or nginx — not exposed directly on 80/443)
-- [ ] Ports 5432, 6379, 8082 are NOT exposed to the internet
-- [ ] Twitch redirect URIs use `https://` not `http://`
+- [ ] `JWT_SECRET` is randomly generated (≥64 bytes)
+- [ ] `ENCRYPTION_KEY` is randomly generated (32 bytes, base64)
+- [ ] API and frontend are behind TLS
+- [ ] Ports 5432, 6379, 8082 are NOT exposed
+- [ ] Twitch redirect URIs use `https://`
 
-For the full security architecture and audit, see [SECURITY_ARCHITECTURE.md](SECURITY_ARCHITECTURE.md).
+---
 
 ## Troubleshooting
 
 **API won't start — "waiting for database"**
-Run `docker compose ps` — make sure `postgres` shows `healthy`. If it's stuck starting, check `docker compose logs postgres`.
+`docker compose ps` — check `postgres` is `healthy`. If stuck: `docker compose logs postgres`.
 
 **OAuth redirect fails**
-The `APP_BASE_URL` in your `.env` must exactly match the base URL you registered in the Twitch Developer Console.
+`API_BASE_URL` in `.env` must exactly match the base URL registered in your Twitch app.
 
 **"Invalid JWT" errors after restart**
-`JWT_SECRET` must be the same across restarts. If you regenerated it, all existing sessions are invalidated — users need to log in again.
+`JWT_SECRET` must stay the same across restarts. Changing it invalidates all sessions.
+
+**Bot token invalid after ENCRYPTION_KEY change**
+Rotating `ENCRYPTION_KEY` makes all stored OAuth tokens unreadable. Re-auth the bot after rotating.
 
 **Database migrations failed**
-Check `docker compose logs api`. The migration error message will tell you which migration failed. Most commonly caused by an incompatible schema from a previous version — check the release notes.
+`docker compose logs api` — the error message names the failing migration. Check release notes for schema changes.
