@@ -6,6 +6,29 @@ Licensed under **AGPL-3.0**. Self-hosted deployments have zero restrictions.
 
 ---
 
+## Quick Start
+
+The fastest way to get up and running:
+
+```bash
+git clone --recursive git@github.com:NoMercyLabs/nomnomzbot.git
+cd nomnomzbot
+node setup.mjs
+```
+
+The interactive setup wizard handles everything — Twitch credentials, .env files, Docker, and first boot.
+
+---
+
+## Sub-Project Docs
+
+- [nomnomzbot-server/README.md](nomnomzbot-server/README.md) — Backend API (ASP.NET Core, PostgreSQL, Redis)
+- [nomnomzbot-app/README.md](nomnomzbot-app/README.md) — Frontend app (Expo, React Native, web + mobile)
+
+For production and self-hosted deployment, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
+---
+
 ## Repository Layout
 
 ```

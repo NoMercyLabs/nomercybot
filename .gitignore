@@ -5,6 +5,8 @@
 !.gitignore
 !.gitmodules
 !README.md
+!DEPLOYMENT.md
+!SECURITY_ARCHITECTURE.md
 !CLAUDE.md
 !setup.mjs
 !package.json
@@ -12,5 +14,7 @@
 
 # Submodules (git handles these automatically via .gitmodules)
 !nomercybot-server
+!nomercybot-server/README.md
 !nomercybot-app
+!nomercybot-app/README.md
 !nomercybot-design
