@@ -6,6 +6,3 @@
 	path = nomnomzbot-app
 	url = https://github.com/NoMercyLabs/nomnomzbot-app.git
 
-[submodule "nomnomzbot-design"]
-	path = nomnomzbot-design
-	url = https://github.com/NoMercyLabs/nomnomzbot-design.git
