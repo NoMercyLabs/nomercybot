@@ -1,11 +1,10 @@
-# Cloudflare Tunnel ingress rules
-# Routes traffic from public hostnames to internal Docker services.
-# API_HOSTNAME and FRONTEND_HOSTNAME are substituted at container startup
-# from the environment variables defined in docker-compose.yml / .env
-
 ingress:
-  - hostname: API_HOSTNAME_PLACEHOLDER
+  - hostname: bot-api.nomercy.tv
     service: http://api:5000
-  - hostname: FRONTEND_HOSTNAME_PLACEHOLDER
+  - hostname: bot-dev-api.nomercy.tv
+    service: http://api:5000
+  - hostname: bot.nomercy.tv
+    service: http://web:80
+  - hostname: bot-dev.nomercy.tv
     service: http://web:80
   - service: http_status:404

@@ -122,14 +122,9 @@ services:
     image: cloudflare/cloudflared:latest
     container_name: nomnomzbot-tunnel
     restart: unless-stopped
-    entrypoint: ["/bin/sh", "/etc/cloudflared/entrypoint.sh"]
-    environment:
-      - CLOUDFLARE_TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
-      - API_BASE_URL=${API_BASE_URL:-http://localhost:5080}
-      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:8081}
+    command: tunnel --config /etc/cloudflared/config.yml run --token ${CLOUDFLARE_TUNNEL_TOKEN}
     volumes:
-      - ./cloudflared/config.yml:/etc/cloudflared/config.yml.tpl:ro
-      - ./cloudflared/entrypoint.sh:/etc/cloudflared/entrypoint.sh:ro
+      - ./cloudflared/config.yml:/etc/cloudflared/config.yml:ro
     depends_on:
       api:
         condition: service_healthy
