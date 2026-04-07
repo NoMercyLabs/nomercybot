@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import {
   View,
   Text,
-  FlatList,
   TextInput,
   Pressable,
   RefreshControl,
@@ -325,58 +324,52 @@ function UsersTab({ channelId, role }: { channelId: string; role?: 'follower' | 
         ))}
       </View>
 
-      <FlatList
-        data={showSkeleton ? ([] as CommunityUser[]) : users}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <UserRow
-            user={item}
-            channelId={channelId}
-            onPress={() => router.push(`/(dashboard)/community/${item.id}` as any)}
+      <ScrollView refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor="#7C3AED" />}>
+        {showSkeleton ? (
+          <View>
+            {Array.from({ length: 5 }).map((_, i) => <UserRowSkeleton key={i} />)}
+          </View>
+        ) : users.length === 0 ? (
+          <EmptyState
+            icon={<Users size={40} color="#3a3b4f" />}
+            title="No users found"
+            message={debouncedSearch ? `No users match "${debouncedSearch}"` : 'No users in this channel yet.'}
           />
-        )}
-        ListHeaderComponent={
-          showSkeleton ? (
-            <View>
-              {Array.from({ length: 5 }).map((_, i) => <UserRowSkeleton key={i} />)}
-            </View>
-          ) : null
-        }
-        ListEmptyComponent={
-          !showSkeleton ? (
-            <EmptyState
-              icon={<Users size={40} color="#3a3b4f" />}
-              title="No users found"
-              message={debouncedSearch ? `No users match "${debouncedSearch}"` : 'No users in this channel yet.'}
-            />
-          ) : null
-        }
-        ListFooterComponent={
-          data && users.length > 0 ? (
-            <View
-              className="px-5 py-3 flex-row items-center justify-between"
-              style={{ borderTopWidth: 1, borderTopColor: '#2a2b3a' }}
-            >
-              <Text className="text-xs" style={{ color: '#5a5b72' }}>
-                {isFollowers
-                  ? `Page ${page} · ${totalCount.toLocaleString()} total`
-                  : `Showing ${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, totalCount)} of ${totalCount.toLocaleString()}`}
-              </Text>
-              {(totalPages > 1 || hasMore) && (
-                <View className="flex-row items-center gap-1">
-                  <Pressable
-                    onPress={handlePrevPage}
-                    disabled={page === 1}
-                    className="w-7 h-7 rounded items-center justify-center"
-                    style={{ backgroundColor: '#1e1f2a', borderWidth: 1, borderColor: '#2a2b3a', opacity: page === 1 ? 0.4 : 1 }}
-                  >
-                    <ChevronLeft size={12} color="#8889a0" />
-                  </Pressable>
-                  {!isFollowers && Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                    const p = i + Math.max(1, Math.min(page - 2, totalPages - 4))
-                    return (
-                      <Pressable
-                        key={p}
+        ) : (
+          <>
+            {users.map((item) => (
+              <UserRow
+                key={item.id}
+                user={item}
+                channelId={channelId}
+                onPress={() => router.push(`/(dashboard)/community/${item.id}` as any)}
+              />
+            ))}
+            {data && users.length > 0 && (
+              <View
+                className="px-5 py-3 flex-row items-center justify-between"
+                style={{ borderTopWidth: 1, borderTopColor: '#2a2b3a' }}
+              >
+                <Text className="text-xs" style={{ color: '#5a5b72' }}>
+                  {isFollowers
+                    ? `Page ${page} · ${totalCount.toLocaleString()} total`
+                    : `Showing ${(page - 1) * PAGE_SIZE + 1}–${Math.min(page * PAGE_SIZE, totalCount)} of ${totalCount.toLocaleString()}`}
+                </Text>
+                {(totalPages > 1 || hasMore) && (
+                  <View className="flex-row items-center gap-1">
+                    <Pressable
+                      onPress={handlePrevPage}
+                      disabled={page === 1}
+                      className="w-7 h-7 rounded items-center justify-center"
+                      style={{ backgroundColor: '#1e1f2a', borderWidth: 1, borderColor: '#2a2b3a', opacity: page === 1 ? 0.4 : 1 }}
+                    >
+                      <ChevronLeft size={12} color="#8889a0" />
+                    </Pressable>
+                    {!isFollowers && Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      const p = i + Math.max(1, Math.min(page - 2, totalPages - 4))
+                      return (
+                        <Pressable
+                          key={p}
                         onPress={() => setPage(p)}
                         className="w-7 h-7 rounded items-center justify-center"
                         style={{
@@ -402,13 +395,13 @@ function UsersTab({ channelId, role }: { channelId: string; role?: 'follower' | 
                   >
                     <ChevronRight size={12} color="#8889a0" />
                   </Pressable>
-                </View>
-              )}
-            </View>
-          ) : null
-        }
-        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor="#7C3AED" />}
-      />
+                  </View>
+                )}
+              </View>
+            )}
+          </>
+        )}
+      </ScrollView>
     </View>
   )
 }
@@ -432,31 +425,24 @@ function BansTab({ channelId }: { channelId: string }) {
   const bans = data?.data ?? []
 
   return (
-    <FlatList
-      data={showSkeleton ? ([] as BannedUser[]) : bans}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <BanRow ban={item} onUnban={() => unban(item.id)} unbanning={isUnbanning && unbanningId === item.id} />
+    <ScrollView refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor="#7C3AED" />}>
+      {showSkeleton ? (
+        <View className="px-5 py-3 gap-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <View key={i} className="gap-2">
+              <Skeleton className="h-4 w-40" />
+              <Skeleton className="h-3 w-56" />
+            </View>
+          ))}
+        </View>
+      ) : bans.length === 0 && !isRefetching && data !== undefined ? (
+        <EmptyState icon={<Ban size={40} color="#3a3b4f" />} title="No bans" message="No banned users in this channel." />
+      ) : (
+        bans.map((item) => (
+          <BanRow key={item.id} ban={item} onUnban={() => unban(item.id)} unbanning={isUnbanning && unbanningId === item.id} />
+        ))
       )}
-      ListHeaderComponent={
-        showSkeleton ? (
-          <View className="px-5 py-3 gap-4">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <View key={i} className="gap-2">
-                <Skeleton className="h-4 w-40" />
-                <Skeleton className="h-3 w-56" />
-              </View>
-            ))}
-          </View>
-        ) : null
-      }
-      ListEmptyComponent={
-        !showSkeleton && !isRefetching && data !== undefined ? (
-          <EmptyState icon={<Ban size={40} color="#3a3b4f" />} title="No bans" message="No banned users in this channel." />
-        ) : null
-      }
-      refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor="#7C3AED" />}
-    />
+    </ScrollView>
   )
 }
 

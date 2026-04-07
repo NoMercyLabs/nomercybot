@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Modal, FlatList } from 'react-native'
+import { View, Text, Pressable, Modal, ScrollView } from 'react-native'
 import { useState, useEffect } from 'react'
 import { router } from 'expo-router'
 import { useChannel } from '@/hooks/useChannel'
@@ -148,21 +148,20 @@ export function ChannelSwitcher() {
                 <Text className="text-sm" style={{ color: '#6b7280' }}>No channels found</Text>
               </View>
             ) : (
-              <FlatList
-                data={channels}
-                keyExtractor={(c) => c.id}
-                style={{ maxHeight: 320 }}
-                renderItem={({ item }) => (
-                  <ChannelRow
-                    channel={item}
-                    isSelected={item.id === currentChannel?.id}
-                    onSelect={() => handleSelect(item)}
-                  />
-                )}
-                ItemSeparatorComponent={() => (
-                  <View style={{ height: 1, backgroundColor: '#2a2b3a', marginHorizontal: 16 }} />
-                )}
-              />
+              <ScrollView style={{ maxHeight: 320 }}>
+                {channels.map((item, index) => (
+                  <View key={item.id}>
+                    <ChannelRow
+                      channel={item}
+                      isSelected={item.id === currentChannel?.id}
+                      onSelect={() => handleSelect(item)}
+                    />
+                    {index < channels.length - 1 && (
+                      <View style={{ height: 1, backgroundColor: '#2a2b3a', marginHorizontal: 16 }} />
+                    )}
+                  </View>
+                ))}
+              </ScrollView>
             )}
           </View>
         </Pressable>

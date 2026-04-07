@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Modal, FlatList } from 'react-native'
+import { View, Text, Pressable, Modal, ScrollView } from 'react-native'
 import { useState } from 'react'
 import { ChevronDown, Check } from 'lucide-react-native'
 import { cn } from '@/lib/utils/cn'
@@ -46,11 +46,10 @@ export function Select({ label, value, onValueChange, options, placeholder, erro
             className="mx-4 mt-40 rounded-xl overflow-hidden"
             style={{ backgroundColor: '#16171f', borderWidth: 1, borderColor: '#2a2b3a' }}
           >
-            <FlatList
-              data={options}
-              keyExtractor={(item) => item.value}
-              renderItem={({ item }) => (
+            <ScrollView style={{ maxHeight: 320 }}>
+              {options.map((item) => (
                 <Pressable
+                  key={item.value}
                   className="flex-row items-center justify-between px-4 py-3.5"
                   style={{ borderBottomWidth: 1, borderBottomColor: '#2a2b3a' }}
                   onPress={() => { onValueChange(item.value); setOpen(false) }}
@@ -58,8 +57,8 @@ export function Select({ label, value, onValueChange, options, placeholder, erro
                   <Text className="text-sm text-white">{item.label}</Text>
                   {item.value === value && <Check size={16} color="#a78bfa" />}
                 </Pressable>
-              )}
-            />
+              ))}
+            </ScrollView>
           </View>
         </Pressable>
       </Modal>

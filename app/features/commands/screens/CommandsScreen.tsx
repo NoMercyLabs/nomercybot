@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable, ScrollView, FlatList, Platform } from 'react-native'
+import { View, Text, TextInput, Pressable, ScrollView, Platform } from 'react-native'
 import { useState, useCallback } from 'react'
 import { router } from 'expo-router'
 import { useApiQuery } from '@/hooks/useApi'
@@ -225,57 +225,8 @@ export function CommandsScreen() {
             ))}
           </View>
         ) : (
-          <FlatList
-            data={filtered}
-            keyExtractor={(cmd) => String(cmd.id)}
-            renderItem={({ item: cmd, index }) => (
-              <Pressable
-                onPress={() => router.push(`/(dashboard)/commands/${cmd.name}` as any)}
-                style={{ backgroundColor: index % 2 === 0 ? '#0a0b0f' : 'rgba(26,21,48,0.5)' }}
-              >
-                <View
-                  className="flex-row items-center px-5 py-2"
-                  style={{ borderBottomWidth: 1, borderBottomColor: '#2a2b3a' }}
-                >
-                  {/* Command name */}
-                  <View style={{ flex: 2 }}>
-                    <Text className="text-sm font-mono font-medium" style={{ color: '#a78bfa' }}>
-                      !{cmd.name}
-                    </Text>
-                  </View>
-                  {/* Type badge */}
-                  <View style={{ flex: 1 }}>
-                    <TypeBadge type={(cmd as any).type ?? 'Text'} />
-                  </View>
-                  {/* Permission */}
-                  <View style={{ flex: 1 }}>
-                    <Text className="text-xs" style={{ color: '#aaabbe' }}>
-                      {PERMISSION_LABELS[cmd.permission] ?? cmd.permission}
-                    </Text>
-                  </View>
-                  {/* Cooldown */}
-                  <View style={{ flex: 1 }}>
-                    <Text className="text-xs" style={{ color: '#8889a0' }}>
-                      {cmd.cooldownSeconds}s
-                    </Text>
-                  </View>
-                  {/* Toggle */}
-                  <View style={{ flex: 1 }}>
-                    <InlineToggle
-                      value={cmd.isEnabled}
-                      onValueChange={() => handleToggle(cmd)}
-                    />
-                  </View>
-                  {/* Usage */}
-                  <View style={{ flex: 1 }}>
-                    <Text className="text-xs" style={{ color: '#8889a0' }}>
-                      {cmd.usageCount?.toLocaleString() ?? '0'}
-                    </Text>
-                  </View>
-                </View>
-              </Pressable>
-            )}
-            ListEmptyComponent={
+          <ScrollView>
+            {filtered.length === 0 ? (
               <View className="items-center py-16">
                 <Terminal size={32} color="#3a3b4f" />
                 <Text className="text-sm mt-3" style={{ color: '#5a5b72' }}>
@@ -292,17 +243,58 @@ export function CommandsScreen() {
                   </View>
                 )}
               </View>
-            }
-            ListFooterComponent={
-              filtered.length > 0 ? (
+            ) : (
+              <>
+                {filtered.map((cmd, index) => (
+                  <Pressable
+                    key={String(cmd.id)}
+                    onPress={() => router.push(`/(dashboard)/commands/${cmd.name}` as any)}
+                    style={{ backgroundColor: index % 2 === 0 ? '#0a0b0f' : 'rgba(26,21,48,0.5)' }}
+                  >
+                    <View
+                      className="flex-row items-center px-5 py-2"
+                      style={{ borderBottomWidth: 1, borderBottomColor: '#2a2b3a' }}
+                    >
+                      <View style={{ flex: 2 }}>
+                        <Text className="text-sm font-mono font-medium" style={{ color: '#a78bfa' }}>
+                          !{cmd.name}
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <TypeBadge type={(cmd as any).type ?? 'Text'} />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text className="text-xs" style={{ color: '#aaabbe' }}>
+                          {PERMISSION_LABELS[cmd.permission] ?? cmd.permission}
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text className="text-xs" style={{ color: '#8889a0' }}>
+                          {cmd.cooldownSeconds}s
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <InlineToggle
+                          value={cmd.isEnabled}
+                          onValueChange={() => handleToggle(cmd)}
+                        />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text className="text-xs" style={{ color: '#8889a0' }}>
+                          {cmd.usageCount?.toLocaleString() ?? '0'}
+                        </Text>
+                      </View>
+                    </View>
+                  </Pressable>
+                ))}
                 <View className="flex-row items-center justify-between px-5 py-3">
                   <Text className="text-xs" style={{ color: '#5a5b72' }}>
                     Showing {filtered.length} of {(data ?? []).length} commands
                   </Text>
                 </View>
-              ) : null
-            }
-          />
+              </>
+            )}
+          </ScrollView>
         )}
       </View>
     </ErrorBoundary>

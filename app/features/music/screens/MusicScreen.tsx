@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react'
 import {
   View,
   Text,
-  FlatList,
   Pressable,
   TextInput,
   RefreshControl,
@@ -297,22 +296,20 @@ function QueueTab({ channelId }: { channelId: string }) {
           message="Pull down to retry"
         />
       ) : (
-        <FlatList
-          data={queue ?? []}
-          keyExtractor={(item) => String(item.position)}
-          renderItem={renderItem}
-          contentContainerStyle={{ paddingHorizontal: 16 }}
-          refreshControl={
-            <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor="#a78bfa" />
-          }
-          ListEmptyComponent={
+        <ScrollView
+          style={{ paddingHorizontal: 16 }}
+          refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor="#a78bfa" />}
+        >
+          {(queue ?? []).length === 0 ? (
             <EmptyState
               icon={<Music2 size={48} color="#9ca3af" />}
               title="Queue is empty"
               message="Add songs using the input above"
             />
-          }
-        />
+          ) : (queue ?? []).map((item) => (
+            <View key={String(item.position)}>{renderItem({ item })}</View>
+          ))}
+        </ScrollView>
       )}
     </View>
   )

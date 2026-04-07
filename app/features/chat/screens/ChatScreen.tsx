@@ -1,5 +1,5 @@
 import {
-  View, Text, FlatList, TextInput, Pressable,
+  View, Text, TextInput, Pressable,
   KeyboardAvoidingView, Platform, Modal, ScrollView,
 } from 'react-native'
 import { useState, useRef, useEffect, useCallback } from 'react'
@@ -211,7 +211,7 @@ export function ChatScreen() {
   const [isPaused, setIsPaused] = useState(false)
   const [activeFilters, setActiveFilters] = useState<Set<ChatFilter>>(new Set())
   const [chattersPerMin, setChattersPerMin] = useState(0)
-  const listRef = useRef<FlatList>(null)
+  const listRef = useRef<ScrollView>(null)
   const { on, off, connect, invoke, status } = useSignalR()
   const { isDesktop } = useBreakpoint()
 
@@ -285,7 +285,7 @@ export function ChatScreen() {
   }, [input, channelId, invoke])
 
   const scrollToBottom = () => {
-    listRef.current?.scrollToEnd({ animated: true })
+    listRef.current?.scrollToEnd({ animated: true } as any)
     setShowScrollBtn(false)
     setIsPaused(false)
   }
@@ -405,32 +405,32 @@ export function ChatScreen() {
       )}
 
       {/* Messages */}
-      <FlatList
+      <ScrollView
         ref={listRef}
-        data={messages}
-        keyExtractor={(m) => m._key}
         className="flex-1"
         contentContainerStyle={{ paddingHorizontal: 8, paddingVertical: 8 }}
         onScrollBeginDrag={() => setIsPaused(true)}
-        onEndReached={() => {
-          setShowScrollBtn(false)
-          setIsPaused(false)
+        onScroll={({ nativeEvent }) => {
+          const { layoutMeasurement, contentOffset, contentSize } = nativeEvent
+          const isAtBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20
+          if (isAtBottom) { setShowScrollBtn(false); setIsPaused(false) }
         }}
-        onEndReachedThreshold={0.1}
-        ListEmptyComponent={
+        scrollEventThrottle={100}
+      >
+        {messages.length === 0 ? (
           <View className="items-center py-12">
             <Text className="text-sm" style={{ color: '#3a3b4f' }}>{t('empty') as string}</Text>
           </View>
-        }
-        renderItem={({ item }) => (
+        ) : messages.map((item) => (
           <Pressable
+            key={item._key}
             onPress={() => !item.isDeleted && setSelectedMsg(item)}
             onLongPress={() => !item.isDeleted && setSelectedMsg(item)}
           >
             <ChatMessage message={item} isDeleted={item.isDeleted} />
           </Pressable>
-        )}
-      />
+        ))}
+      </ScrollView>
 
       {showScrollBtn && (
         <Pressable

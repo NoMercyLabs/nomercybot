@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import { useQuery } from '@tanstack/react-query'
 import { apiClient } from '@/lib/api/client'
 import { Card, CardHeader } from '@/components/ui/Card'
@@ -23,15 +23,11 @@ export function RecentActivity() {
       {isLoading ? (
         <Skeleton className="h-12 w-full" count={5} />
       ) : (
-        <FlatList
-          data={data?.items ?? []}
-          keyExtractor={(item) => item.id}
-          scrollEnabled={false}
-          ListEmptyComponent={
+        <ScrollView scrollEnabled={false}>
+          {(data?.items ?? []).length === 0 ? (
             <Text className="text-sm py-4 text-center" style={{ color: '#8889a0' }}>No recent activity</Text>
-          }
-          renderItem={({ item }) => (
-            <View className="flex-row items-center gap-3 py-2.5 border-b" style={{ borderColor: '#2a2b3a' }}>
+          ) : (data?.items ?? []).map((item: any) => (
+            <View key={item.id} className="flex-row items-center gap-3 py-2.5 border-b" style={{ borderColor: '#2a2b3a' }}>
               <View className="flex-1">
                 <Text className="text-sm text-white">{item.message}</Text>
               </View>
@@ -39,8 +35,8 @@ export function RecentActivity() {
                 {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true })}
               </Text>
             </View>
-          )}
-        />
+          ))}
+        </ScrollView>
       )}
     </Card>
   )
