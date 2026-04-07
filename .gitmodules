@@ -1,6 +1,6 @@
-[submodule "nomercybot"]
-	path = nomercybot
-	url = git@github.com:NoMercyLabs/nomercybot.git
+[submodule "nomercybot-server"]
+	path = nomercybot-server
+	url = git@github.com:NoMercyLabs/nomercybot-server.git
 
 [submodule "nomercybot-app"]
 	path = nomercybot-app

@@ -9,8 +9,8 @@ Licensed under **AGPL-3.0**. Self-hosted deployments have zero restrictions.
 ## Repository Layout
 
 ```
-NoMercyLabs/
-├── nomercybot/           # Backend — .NET 10, PostgreSQL, Redis
+nomercybot/                            # Primary monorepo (this repo)
+├── nomercybot-server/    # Backend — .NET 10, PostgreSQL, Redis  [submodule]
 │   ├── src/
 │   │   ├── NomercyBot.Domain/          # Entities, domain events, value objects
 │   │   ├── NomercyBot.Application/     # Use cases, interfaces, pipeline engine
@@ -19,11 +19,11 @@ NoMercyLabs/
 │   ├── tests/                          # xUnit test projects (one per layer)
 │   ├── docker-compose.yml
 │   └── .env.example
-├── nomercybot-app/       # Frontend — Expo (React Native), web + iOS + Android
+├── nomercybot-app/       # Frontend — Expo (React Native), web + iOS + Android  [submodule]
 │   ├── app/              # Expo Router file-based routes
 │   ├── .env.development
 │   └── .env.production
-└── nomercybot-design/    # HTML mockups, research docs, architecture specs
+└── nomercybot-design/    # HTML mockups, research docs, architecture specs  [submodule]
 ```
 
 ---
@@ -73,12 +73,12 @@ NoMercyLabs/
 
 ## Environment Setup
 
-### Backend — `nomercybot/.env`
+### Backend — `nomercybot-server/.env`
 
 Copy the example file and fill in values:
 
 ```bash
-cd nomercybot
+cd nomercybot-server
 cp .env.example .env
 ```
 
@@ -109,7 +109,7 @@ cp .env.example .env
 | `REDIS_PORT` | no | `6379` | Host port for Redis |
 | `ADMINER_PORT` | no | `8082` | Host port for Adminer (DB browser) |
 
-> For **`dotnet run` local dev** (not Docker), Twitch credentials go in `nomercybot/src/NomercyBot.Api/appsettings.Development.json` instead. All other settings fall back to defaults from `appsettings.json`.
+> For **`dotnet run` local dev** (not Docker), Twitch credentials go in `nomercybot-server/src/NomercyBot.Api/appsettings.Development.json` instead. All other settings fall back to defaults from `appsettings.json`.
 
 ### Frontend — `nomercybot-app/.env.development`
 
@@ -125,7 +125,7 @@ cp .env.example .env
 ### 1. Clone
 
 ```bash
-git clone https://github.com/NoMercyLabs/nomercybot.git
+git clone --recursive git@github.com:NoMercyLabs/nomercybot.git
 cd nomercybot
 ```
 
@@ -134,7 +134,7 @@ cd nomercybot
 For local development you only need Postgres and Redis — skip the `api` container and run the API with `dotnet run` instead:
 
 ```bash
-cd nomercybot
+cd nomercybot-server
 docker-compose up -d postgres redis adminer
 ```
 
@@ -151,7 +151,7 @@ docker-compose ps   # both should show "healthy"
 ### 3. Backend Setup
 
 ```bash
-cd nomercybot/src/NomercyBot.Api
+cd nomercybot-server/src/NomercyBot.Api
 ```
 
 For local dev without Docker, edit `appsettings.Development.json` with your Twitch credentials (or use the pre-filled dev credentials):
@@ -256,7 +256,7 @@ If you only want to develop backend features without Twitch login, you can call 
 To run everything in Docker:
 
 ```bash
-cd nomercybot
+cd nomercybot-server
 cp .env.example .env
 # Fill in all required values in .env
 docker-compose up -d
@@ -320,7 +320,7 @@ Template strings support 90+ variables: `{{user.name}}`, `{{channel.title}}`, `{
 ### Running Tests
 
 ```bash
-cd nomercybot
+cd nomercybot-server
 dotnet test                          # run all test projects
 dotnet test tests/NomercyBot.Domain.Tests
 dotnet test tests/NomercyBot.Application.Tests
