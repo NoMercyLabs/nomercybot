@@ -34,6 +34,31 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
     return { type: 'sourceFile', filePath: PRETTY_FORMAT_SHIM }
   }
 
+  // react-native-css (used by NativeWind's withNativewind) has a webResolver that
+  // intercepts react-native-web/dist/cjs/exports/FlatList/index.js and redirects
+  // it to react-native-css/components/FlatList.js. That component does
+  // require('react-native').FlatList — which hits the partially-initialized
+  // react-native-web CJS index (circular require), where FlatList is still void 0
+  // (set as placeholder at the top of the file). The undefined propagates into
+  // Metro's lazy ESM getter → crash: "Cannot read properties of undefined (reading 'default')".
+  //
+  // Fix: intercept react-native-web's own internal FlatList sub-module here
+  // (as the parentResolver that NativeWind calls). Our stub is returned instead;
+  // NativeWind's webResolver sees the path is NOT inside react-native-web and
+  // leaves it alone — circular dependency broken.
+  if (platform === 'web') {
+    const origin = context.originModulePath?.replace(/\\/g, '/') ?? ''
+    if (
+      origin.includes('/react-native-web/') && (
+        moduleName === './exports/FlatList' ||
+        moduleName.endsWith('/exports/FlatList') ||
+        moduleName.includes('/vendor/react-native/FlatList')
+      )
+    ) {
+      return { type: 'sourceFile', filePath: FLATLIST_STUB }
+    }
+  }
+
   // react-native-reanimated@4.x accesses { FlatList } from 'react-native' at
   // module init (ReanimatedFlatList wrapper). react-native-web@0.21.x no
   // longer ships FlatList — its getter returns `_FlatList.default` where
