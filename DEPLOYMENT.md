@@ -54,7 +54,13 @@ For most people, self-hosted is what you want.
    docker compose up -d
    ```
 
-6. Update Twitch redirect URIs in your Twitch Developer Console:
+6. Register redirect URIs in your Twitch Developer Console. They are **computed from `APP_BASE_URL`** — no separate config needed. The three paths are:
+   ```
+   {APP_BASE_URL}/api/v1/auth/twitch/callback
+   {APP_BASE_URL}/api/v1/auth/twitch/bot/callback
+   {APP_BASE_URL}/api/v1/channels/callback/bot
+   ```
+   Example for `APP_BASE_URL=https://bot.yourdomain.com`:
    ```
    https://bot.yourdomain.com/api/v1/auth/twitch/callback
    https://bot.yourdomain.com/api/v1/auth/twitch/bot/callback

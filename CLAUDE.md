@@ -308,13 +308,12 @@ Set `EXPO_PUBLIC_API_URL=http://localhost:5080` in `.env.development` first.
 3. API exchanges code, stores encrypted tokens (`ENCRYPTION_KEY`), returns JWT to frontend
 4. Separate bot account OAuth: `/api/v1/auth/twitch/bot/callback`
 
-**Redirect URIs to register in Twitch Developer Console:**
-```
-http://localhost:5080/api/v1/auth/twitch/callback
-http://localhost:5080/api/v1/auth/twitch/bot/callback
-http://localhost:5080/api/v1/channels/callback/bot
-```
-Replace `localhost:5080` with your tunnel/production URL as needed.
+**Redirect URIs are computed at runtime from `App:BaseUrl`** — do not set them in config or env vars. The paths are always:
+- `{App:BaseUrl}/api/v1/auth/twitch/callback`
+- `{App:BaseUrl}/api/v1/auth/twitch/bot/callback`
+- `{App:BaseUrl}/api/v1/channels/callback/bot`
+
+Register all three in the Twitch Developer Console using your actual base URL (e.g. `https://bot-dev-api.nomercy.tv` for dev, `https://api.nomnomz.bot` for prod).
 
 **Progressive scopes** — don't request everything up front. Request scopes when the user enables the relevant feature (e.g., `channel:manage:raids` when they enable raid responses).
 
@@ -436,7 +435,7 @@ For local `dotnet run` dev (not Docker): put Twitch credentials in `appsettings.
   "ConnectionStrings": { "DefaultConnection": "...", "Redis": "..." },
   "Jwt": { "Secret": "", "Issuer": "nomnomzbot", "Audience": "nomnomzbot", "ExpiryMinutes": 60 },
   "Encryption": { "Key": "" },
-  "Twitch": { "ClientId": "", "ClientSecret": "", "BotUsername": "", "RedirectUri": "", "BotRedirectUri": "", "ChannelBotRedirectUri": "" },
+  "Twitch": { "ClientId": "", "ClientSecret": "", "BotUsername": "" },
   "Spotify": { "ClientId": "", "ClientSecret": "" },
   "Discord": { "ClientId": "", "ClientSecret": "" },
   "YouTube": { "ClientId": "", "ClientSecret": "" },
