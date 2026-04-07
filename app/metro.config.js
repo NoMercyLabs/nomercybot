@@ -2,6 +2,8 @@ const path = require('path')
 const { getDefaultConfig } = require('expo/metro-config')
 const { withNativewind } = require('nativewind/metro')
 
+const FLATLIST_STUB = path.resolve(__dirname, 'scripts/FlatListStub.web.js')
+
 const config = getDefaultConfig(__dirname)
 
 // ---------------------------------------------------------------------------
@@ -28,6 +30,17 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
   // pretty-format → shim with correct default export
   if (moduleName === 'pretty-format') {
     return { type: 'sourceFile', filePath: PRETTY_FORMAT_SHIM }
+  }
+
+  // react-native-web 0.21.x has a broken FlatList getter (return D.default where D=undefined).
+  // react-native-reanimated@4.x triggers it at startup via itemLayoutAnimation → ReanimatedFlatList.
+  // On web, redirect every FlatList import to a safe ScrollView-based stub.
+  if (platform === 'web' && (
+    moduleName === 'react-native/Libraries/Lists/FlatList' ||
+    moduleName === 'react-native/Libraries/Lists/VirtualizedList' ||
+    moduleName === 'react-native/Libraries/Lists/VirtualizedList_EXPERIMENTAL'
+  )) {
+    return { type: 'sourceFile', filePath: FLATLIST_STUB }
   }
 
   // zustand/* → force CJS build (no import.meta.env)
