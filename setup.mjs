@@ -1062,7 +1062,7 @@ function writeFrontendEnv() {
     return;
   }
   let content = fs.readFileSync(FRONTEND_ENV, 'utf8');
-  if (content.includes('bot-dev-api.nomercy.tv')) {
+  if (content.includes('bot-dev-api.nomercy.tv') || content.includes('api.nomnomz.bot')) {
     content = content.replace(/EXPO_PUBLIC_API_URL=.*/g, 'EXPO_PUBLIC_API_URL=http://localhost:5080');
     fs.writeFileSync(FRONTEND_ENV, content);
     console.log(`  ${OK} nomnomzbot-app/.env.development — API URL updated to localhost`);
@@ -1239,7 +1239,7 @@ async function stepFirstRunGuide(services) {
     `  Twitch OAuth requires an HTTPS redirect URL.`,
     '',
     `  ${bold('Option A (easiest):')} The pre-filled dev credentials use a shared`,
-    `  Cloudflare tunnel at ${DIM}bot-dev-api.nomercy.tv${RESET} — OAuth just works.`,
+    `  Cloudflare tunnel at ${DIM}bot-dev-api.nomercy.tv${RESET} — OAuth just works. Production domain: nomnomz.bot.`,
     '',
     `  ${bold('Option B:')} If you used your own Twitch app credentials, you will`,
     `  need a Cloudflare tunnel or HTTPS proxy. See the README for`,
