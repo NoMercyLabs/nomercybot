@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) NoMercy Entertainment. All rights reserved.
+
+name = "nomnomzbot-app"
+compatibility_date = "2024-01-01"
+
+[env.production]
+# Cloudflare Pages — build settings for nomnomz.bot
+# Build command: npm run build:web
+# Build output:  dist/
+# Root:          /

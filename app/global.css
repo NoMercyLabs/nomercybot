@@ -1,0 +1,53 @@
+/* Declare rnw layer first so react-native-web base styles have the lowest cascade priority */
+@layer rnw;
+
+@import "tailwindcss";
+@import "nativewind/theme";
+
+@theme {
+  /* Font families */
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-mono: JetBrains Mono, Fira Code, monospace;
+
+  /* Accent palette (Purple) */
+  --color-accent-50:  #ede9fe;
+  --color-accent-100: #ddd6fe;
+  --color-accent-200: #c4b5fd;
+  --color-accent-300: #a78bfa;
+  --color-accent-400: #8b5cf6;
+  --color-accent-500: #7c3aed;
+  --color-accent-600: #6d28d9;
+  --color-accent-700: #5b21b6;
+  --color-accent-800: #4c1d95;
+  --color-accent-900: #40197e;
+  --color-accent-950: #2b0c59;
+
+  /* Neutral dark surface system — matches nomercybot-design/mockups/shared.css exactly */
+  --color-bg:              #0a0b0f;
+  --color-sidebar:         #111218;
+  --color-surface:         #0a0b0f;
+  --color-surface-raised:  #16171f;
+  --color-surface-overlay: #1e1f2a;
+  --color-border:          #2a2b3a;
+
+  /* Gray scale — exact values from shared.css */
+  --color-gray-950: #0a0b0f;
+  --color-gray-900: #111218;
+  --color-gray-850: #16171f;
+  --color-gray-800: #1e1f2a;
+  --color-gray-700: #2a2b3a;
+  --color-gray-600: #3a3b4f;
+  --color-gray-500: #5a5b72;
+  --color-gray-400: #8889a0;
+  --color-gray-300: #aaabbe;
+  --color-gray-200: #cdcede;
+  --color-gray-100: #e8e9f0;
+  --color-gray-50:  #f4f5fa;
+
+  /* Semantic colors */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger:  #ef4444;
+  --color-info:    #3b82f6;
+  --color-live:    #22c55e;
+}
