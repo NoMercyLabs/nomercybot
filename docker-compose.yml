@@ -20,7 +20,7 @@ services:
       - App__BaseUrl=${API_BASE_URL:-http://localhost:5080}
       - App__FrontendUrl=${FRONTEND_URL:-http://localhost:8081}
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB:-nomnomzbot};Username=${POSTGRES_USER:-nomnomzbot};Password=${POSTGRES_PASSWORD}
-      - ConnectionStrings__Redis=redis://redis:6379
+      - ConnectionStrings__Redis=redis:6379,abortConnect=false
       - Jwt__Secret=${JWT_SECRET}
       - Jwt__Issuer=${JWT_ISSUER:-nomnomzbot}
       - Jwt__Audience=${JWT_AUDIENCE:-nomnomzbot}
