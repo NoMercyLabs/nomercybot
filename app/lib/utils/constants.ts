@@ -1,0 +1,10 @@
+export const APP_NAME = 'NomercyBot'
+export const API_VERSION = 'v1'
+export const SIGNALR_HUB_PATH = '/hubs/dashboard'
+export const MAX_TOAST_MESSAGES = 5
+export const MAX_CHAT_MESSAGES = 200
+export const TOKEN_REFRESH_INTERVAL_MS = 4 * 60 * 1000 // 4 minutes
+export const SIDEBAR_WIDTH = 240
+export const SIDEBAR_COLLAPSED_WIDTH = 56
+export const MAX_CONTENT_WIDTH = 1440
+export const STALE_TIME_MS = 5 * 60 * 1000 // 5 minutes

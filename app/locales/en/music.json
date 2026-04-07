@@ -1,0 +1,21 @@
+{
+  "title": "Music",
+  "nowPlaying": "Now Playing",
+  "queue": "Queue",
+  "noTrack": "Nothing playing",
+  "empty": {
+    "queue": "Queue is empty"
+  },
+  "actions": {
+    "skip": "Skip",
+    "pause": "Pause",
+    "resume": "Resume",
+    "volume": "Volume",
+    "clearQueue": "Clear Queue"
+  },
+  "songRequest": {
+    "title": "Song Requests",
+    "placeholder": "Search for a song...",
+    "submit": "Request Song"
+  }
+}

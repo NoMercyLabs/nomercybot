@@ -1,0 +1,62 @@
+{
+  "app": { "name": "NoMercy Bot" },
+  "nav": {
+    "dashboard": "Dashboard",
+    "commands": "Commando's",
+    "rewards": "Beloningen",
+    "chat": "Chat",
+    "moderation": "Moderatie",
+    "music": "Muziek",
+    "stream": "Stream Info",
+    "community": "Community",
+    "widgets": "Widgets",
+    "pipelines": "Pipelines",
+    "integrations": "Integraties",
+    "permissions": "Rechten",
+    "settings": "Instellingen",
+    "timers": "Timers",
+    "billing": "Facturering",
+    "myData": "Mijn Gegevens"
+  },
+  "actions": {
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "create": "Aanmaken",
+    "confirm": "Bevestigen",
+    "back": "Terug",
+    "search": "Zoeken",
+    "filter": "Filter",
+    "export": "Exporteren",
+    "copy": "Kopiëren",
+    "close": "Sluiten"
+  },
+  "status": {
+    "loading": "Laden...",
+    "saving": "Opslaan...",
+    "error": "Er is iets misgegaan",
+    "success": "Succesvol opgeslagen",
+    "noResults": "Geen resultaten gevonden",
+    "connected": "Verbonden",
+    "disconnected": "Verbinding verbroken",
+    "reconnecting": "Opnieuw verbinden...",
+    "live": "LIVE"
+  },
+  "auth": {
+    "login": "Inloggen met Twitch",
+    "logout": "Uitloggen",
+    "loginRequired": "Log in om door te gaan",
+    "loginSubtitle": "Log in met Twitch om je stream bot te beheren",
+    "signingIn": "Je wordt ingelogd...",
+    "welcome": "Welkom!",
+    "setupDescription": "We zetten je bot op. We laden je kanaal automatisch.",
+    "continue": "Doorgaan",
+    "termsPrivacy": "Door in te loggen ga je akkoord met onze Servicevoorwaarden en Privacybeleid."
+  },
+  "errors": {
+    "notFound": "404",
+    "notFoundMessage": "Dit scherm bestaat niet.",
+    "goHome": "Ga naar huis"
+  }
+}

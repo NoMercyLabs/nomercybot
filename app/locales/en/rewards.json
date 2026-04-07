@@ -1,0 +1,19 @@
+{
+  "title": "Channel Point Rewards",
+  "addNew": "Add Reward",
+  "empty": {
+    "title": "No rewards yet",
+    "description": "Create custom channel point rewards for your viewers."
+  },
+  "form": {
+    "title": "Title",
+    "cost": "Cost (Points)",
+    "description": "Description",
+    "enabled": "Enabled",
+    "requireInput": "Require Viewer Input",
+    "maxPerStream": "Max Per Stream",
+    "maxPerUser": "Max Per User Per Stream",
+    "cooldown": "Global Cooldown (seconds)",
+    "save": "Save Reward"
+  }
+}

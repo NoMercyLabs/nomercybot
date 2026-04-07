@@ -1,0 +1,12 @@
+{
+  "title": "Chat",
+  "placeholder": "Send a message...",
+  "send": "Send",
+  "empty": "No messages yet",
+  "filters": {
+    "all": "All",
+    "commands": "Commands",
+    "rewards": "Rewards",
+    "alerts": "Alerts"
+  }
+}

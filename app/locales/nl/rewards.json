@@ -1,0 +1,19 @@
+{
+  "title": "Kanaalpuntbeloningen",
+  "addNew": "Beloning toevoegen",
+  "empty": {
+    "title": "Nog geen beloningen",
+    "description": "Maak aangepaste kanaalpuntbeloningen voor je kijkers."
+  },
+  "form": {
+    "title": "Titel",
+    "cost": "Kosten (punten)",
+    "description": "Beschrijving",
+    "enabled": "Ingeschakeld",
+    "requireInput": "Kijkersinvoer vereisen",
+    "maxPerStream": "Max per stream",
+    "maxPerUser": "Max per gebruiker per stream",
+    "cooldown": "Globale cooldown (seconden)",
+    "save": "Beloning opslaan"
+  }
+}

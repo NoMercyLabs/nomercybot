@@ -1,0 +1,21 @@
+{
+  "title": "Moderation",
+  "tabs": {
+    "automod": "AutoMod",
+    "banned": "Banned Users",
+    "log": "Mod Log"
+  },
+  "filters": "Filters",
+  "bans": "Bans",
+  "log": "Mod Log",
+  "actions": {
+    "ban": "Ban",
+    "timeout": "Timeout",
+    "unban": "Unban",
+    "deleteMessage": "Delete Message"
+  },
+  "empty": {
+    "title": "No moderation entries",
+    "description": "Moderation actions will appear here."
+  }
+}

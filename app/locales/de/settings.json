@@ -1,0 +1,22 @@
+{
+  "title": "Settings",
+  "general": {
+    "title": "General",
+    "prefix": "Command Prefix",
+    "language": "Language"
+  },
+  "features": {
+    "title": "Feature Toggles",
+    "tts": "Text-to-Speech",
+    "ttsDesc": "Allow viewers to use TTS commands",
+    "moderation": "Auto-Moderation",
+    "moderationDesc": "Enable chat filters and auto-mod",
+    "loyalty": "Loyalty Points",
+    "loyaltyDesc": "Track viewer watch time and points"
+  },
+  "danger": {
+    "title": "Danger Zone",
+    "reset": "Reset Settings",
+    "delete": "Delete Channel Data"
+  }
+}

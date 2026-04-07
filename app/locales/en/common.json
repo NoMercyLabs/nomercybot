@@ -1,0 +1,62 @@
+{
+  "app": { "name": "NoMercy Bot" },
+  "nav": {
+    "dashboard": "Dashboard",
+    "commands": "Commands",
+    "rewards": "Rewards",
+    "chat": "Chat",
+    "moderation": "Moderation",
+    "music": "Music",
+    "stream": "Stream Info",
+    "community": "Community",
+    "widgets": "Widgets",
+    "pipelines": "Pipelines",
+    "integrations": "Integrations",
+    "permissions": "Permissions",
+    "settings": "Settings",
+    "timers": "Timers",
+    "billing": "Billing",
+    "myData": "My Data"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "confirm": "Confirm",
+    "back": "Back",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "copy": "Copy",
+    "close": "Close"
+  },
+  "status": {
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "error": "Something went wrong",
+    "success": "Saved successfully",
+    "noResults": "No results found",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "reconnecting": "Reconnecting...",
+    "live": "LIVE"
+  },
+  "auth": {
+    "login": "Log in with Twitch",
+    "logout": "Log out",
+    "loginRequired": "Please log in to continue",
+    "loginSubtitle": "Sign in with Twitch to manage your stream bot",
+    "signingIn": "Signing you in...",
+    "welcome": "Welcome!",
+    "setupDescription": "Let's get your bot set up. We'll load your channel automatically.",
+    "continue": "Continue",
+    "termsPrivacy": "By signing in, you agree to our Terms of Service and Privacy Policy."
+  },
+  "errors": {
+    "notFound": "404",
+    "notFoundMessage": "This screen doesn't exist.",
+    "goHome": "Go home"
+  }
+}

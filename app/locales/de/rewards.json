@@ -1,0 +1,19 @@
+{
+  "title": "Kanalpunkt-Belohnungen",
+  "addNew": "Belohnung hinzufügen",
+  "empty": {
+    "title": "Noch keine Belohnungen",
+    "description": "Erstelle benutzerdefinierte Kanalpunkt-Belohnungen für deine Zuschauer."
+  },
+  "form": {
+    "title": "Titel",
+    "cost": "Kosten (Punkte)",
+    "description": "Beschreibung",
+    "enabled": "Aktiviert",
+    "requireInput": "Zuschauereingabe erforderlich",
+    "maxPerStream": "Max pro Stream",
+    "maxPerUser": "Max pro Benutzer pro Stream",
+    "cooldown": "Globale Abklingzeit (Sekunden)",
+    "save": "Belohnung speichern"
+  }
+}

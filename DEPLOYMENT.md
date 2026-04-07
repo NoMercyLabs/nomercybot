@@ -110,7 +110,7 @@ FRONTEND_URL=https://yourdomain.com
 
 ```bash
 cd nomnomzbot
-git pull --recurse-submodules
+git pull
 docker compose up -d --build
 ```
 

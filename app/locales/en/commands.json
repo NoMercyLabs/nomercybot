@@ -1,0 +1,33 @@
+{
+  "title": "Commands",
+  "addNew": "Add Command",
+  "empty": {
+    "title": "No commands yet",
+    "description": "Create your first chat command to get started."
+  },
+  "form": {
+    "name": "Command Name",
+    "namePlaceholder": "e.g., !hello",
+    "response": "Response",
+    "responsePlaceholder": "e.g., Hello $(user)!",
+    "cooldown": "Cooldown (seconds)",
+    "userCooldown": "Per-User Cooldown (seconds)",
+    "permission": "Permission Level",
+    "enabled": "Enabled",
+    "aliases": "Aliases",
+    "group": "Group",
+    "save": "Save Command",
+    "delete": "Delete Command"
+  },
+  "permissions": {
+    "everyone": "Everyone",
+    "subscriber": "Subscribers",
+    "vip": "VIPs",
+    "moderator": "Moderators",
+    "broadcaster": "Broadcaster"
+  },
+  "deleteConfirm": {
+    "title": "Delete Command",
+    "message": "Are you sure you want to delete this command? This cannot be undone."
+  }
+}

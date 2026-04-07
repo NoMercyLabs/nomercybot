@@ -1,0 +1,62 @@
+{
+  "app": { "name": "NoMercy Bot" },
+  "nav": {
+    "dashboard": "Dashboard",
+    "commands": "Befehle",
+    "rewards": "Belohnungen",
+    "chat": "Chat",
+    "moderation": "Moderation",
+    "music": "Musik",
+    "stream": "Stream Info",
+    "community": "Community",
+    "widgets": "Widgets",
+    "pipelines": "Pipelines",
+    "integrations": "Integrationen",
+    "permissions": "Berechtigungen",
+    "settings": "Einstellungen",
+    "timers": "Timer",
+    "billing": "Abrechnung",
+    "myData": "Meine Daten"
+  },
+  "actions": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "create": "Erstellen",
+    "confirm": "Bestätigen",
+    "back": "Zurück",
+    "search": "Suchen",
+    "filter": "Filtern",
+    "export": "Exportieren",
+    "copy": "Kopieren",
+    "close": "Schließen"
+  },
+  "status": {
+    "loading": "Laden...",
+    "saving": "Speichern...",
+    "error": "Etwas ist schiefgelaufen",
+    "success": "Erfolgreich gespeichert",
+    "noResults": "Keine Ergebnisse gefunden",
+    "connected": "Verbunden",
+    "disconnected": "Getrennt",
+    "reconnecting": "Verbinde erneut...",
+    "live": "LIVE"
+  },
+  "auth": {
+    "login": "Mit Twitch einloggen",
+    "logout": "Abmelden",
+    "loginRequired": "Bitte einloggen um fortzufahren",
+    "loginSubtitle": "Mit Twitch einloggen um deinen Stream-Bot zu verwalten",
+    "signingIn": "Du wirst eingeloggt...",
+    "welcome": "Willkommen!",
+    "setupDescription": "Wir richten deinen Bot ein. Dein Kanal wird automatisch geladen.",
+    "continue": "Weiter",
+    "termsPrivacy": "Durch das Einloggen stimmst du unseren Nutzungsbedingungen und Datenschutzrichtlinien zu."
+  },
+  "errors": {
+    "notFound": "404",
+    "notFoundMessage": "Diese Seite existiert nicht.",
+    "goHome": "Zur Startseite"
+  }
+}

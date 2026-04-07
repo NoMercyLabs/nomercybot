@@ -1,0 +1,12 @@
+{
+  "title": "Chat",
+  "placeholder": "Stuur een bericht...",
+  "send": "Versturen",
+  "empty": "Nog geen berichten",
+  "filters": {
+    "all": "Alles",
+    "commands": "Commando's",
+    "rewards": "Beloningen",
+    "alerts": "Meldingen"
+  }
+}

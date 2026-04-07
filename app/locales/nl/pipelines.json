@@ -1,0 +1,27 @@
+{
+  "title": "Pipelines",
+  "addNew": "New Pipeline",
+  "empty": {
+    "title": "No pipelines yet",
+    "description": "Build automation workflows triggered by chat events."
+  },
+  "builder": {
+    "toolbar": {
+      "save": "Save Pipeline",
+      "testRun": "Test Run",
+      "undo": "Undo",
+      "redo": "Redo"
+    },
+    "palette": {
+      "triggers": "Triggers",
+      "conditions": "Conditions",
+      "actions": "Actions"
+    },
+    "mobileNote": "Pipeline editing is available on the web dashboard."
+  },
+  "status": {
+    "running": "Running",
+    "stopped": "Stopped",
+    "error": "Error"
+  }
+}

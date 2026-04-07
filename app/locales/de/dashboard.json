@@ -1,0 +1,40 @@
+{
+  "title": "Dashboard",
+  "overview": "Übersicht",
+  "stream": {
+    "playing": "Spielt gerade",
+    "uptime": "Laufzeit",
+    "offline": "Offline"
+  },
+  "stats": {
+    "viewers": "Zuschauer",
+    "followers": "Follower",
+    "commands": "Befehle",
+    "messages": "Nachrichten",
+    "chatMessages": "Chatnachrichten",
+    "commandsUsed": "Verwendete Befehle",
+    "activeCommands": "Aktive Befehle"
+  },
+  "quickAccess": {
+    "title": "Schnellzugriff"
+  },
+  "activityFeed": {
+    "title": "Letzte Aktivität",
+    "empty": "Keine letzte Aktivität",
+    "liveOnly": "Ereignisse erscheinen hier wenn dein Stream live ist",
+    "events": {
+      "followed": "folgte",
+      "subscribed": "abonnierte",
+      "raided": "raidete",
+      "cheered": "jubelte",
+      "usedCommand": "verwendete einen Befehl",
+      "redeemedReward": "löste eine Belohnung ein"
+    }
+  },
+  "quickActions": {
+    "title": "Schnellaktionen",
+    "sendMessage": "Nachricht senden",
+    "skipSong": "Lied überspringen",
+    "toggleShieldMode": "Schildmodus umschalten"
+  }
+}

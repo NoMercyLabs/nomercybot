@@ -13,7 +13,7 @@ Twitch bot management platform. Stream commands, channel point rewards, moderati
 
 ```bash
 # Linux/macOS
-git clone --recursive https://github.com/NoMercyLabs/nomnomzbot.git
+git clone https://github.com/NoMercyLabs/nomnomzbot.git
 cd nomnomzbot
 chmod +x deploy.sh
 ./deploy.sh
@@ -21,7 +21,7 @@ chmod +x deploy.sh
 
 ```powershell
 # Windows
-git clone --recursive https://github.com/NoMercyLabs/nomnomzbot.git
+git clone https://github.com/NoMercyLabs/nomnomzbot.git
 cd nomnomzbot
 .\deploy.ps1
 ```
@@ -40,7 +40,7 @@ The script:
 **Requires: .NET 10 SDK, Node 22, Yarn, Docker (for Postgres + Redis)**
 
 ```bash
-git clone --recursive https://github.com/NoMercyLabs/nomnomzbot.git
+git clone https://github.com/NoMercyLabs/nomnomzbot.git
 cd nomnomzbot
 node setup.mjs
 ```
@@ -51,8 +51,8 @@ The setup script checks all prerequisites, walks through Twitch app creation, an
 
 ## Structure
 
-- `nomnomzbot-server/` — .NET 10 backend API
-- `nomnomzbot-app/` — Expo/React Native dashboard (web + mobile)
+- `server/` — .NET 10 backend API
+- `app/` — Expo/React Native dashboard (web + mobile)
 
 ## Docs
 

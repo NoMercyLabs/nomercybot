@@ -1,0 +1,40 @@
+{
+  "title": "Dashboard",
+  "overview": "Overview",
+  "stream": {
+    "playing": "Playing",
+    "uptime": "Uptime",
+    "offline": "Offline"
+  },
+  "stats": {
+    "viewers": "Viewers",
+    "followers": "Followers",
+    "commands": "Commands",
+    "messages": "Messages",
+    "chatMessages": "Chat Messages",
+    "commandsUsed": "Commands Used",
+    "activeCommands": "Active Commands"
+  },
+  "quickAccess": {
+    "title": "Quick Access"
+  },
+  "activityFeed": {
+    "title": "Recent Activity",
+    "empty": "No recent activity",
+    "liveOnly": "Events will appear here when your stream is live",
+    "events": {
+      "followed": "followed",
+      "subscribed": "subscribed",
+      "raided": "raided",
+      "cheered": "cheered",
+      "usedCommand": "used a command",
+      "redeemedReward": "redeemed a reward"
+    }
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "sendMessage": "Send Message",
+    "skipSong": "Skip Song",
+    "toggleShieldMode": "Toggle Shield Mode"
+  }
+}

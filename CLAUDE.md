@@ -30,8 +30,8 @@ Licensed under **AGPL-3.0**. Copyright (C) NoMercy Entertainment.
 ## Repository Layout
 
 ```
-NoMercyLabs/
-├── nomnomzbot-server/       # Backend — .NET 10, PostgreSQL, Redis
+nomnomzbot/
+├── server/                  # Backend — .NET 10, PostgreSQL, Redis
 │   ├── src/
 │   │   ├── NomNomzBot.Domain/          # Entities, domain events, value objects, interfaces
 │   │   ├── NomNomzBot.Application/     # Use cases, services, pipeline engine, IEventBus
@@ -42,10 +42,8 @@ NoMercyLabs/
 │   │   ├── NomNomzBot.Application.Tests/
 │   │   ├── NomNomzBot.Infrastructure.Tests/
 │   │   └── NomNomzBot.Api.Tests/
-│   ├── docker-compose.yml
-│   ├── .env                 # Created from .env.example; not committed
-│   └── .env.example
-├── nomnomzbot-app/          # Frontend — Expo (React Native), web + iOS + Android
+│   └── Dockerfile
+├── app/                     # Frontend — Expo (React Native), web + iOS + Android
 │   ├── app/                 # Expo Router file-based routes
 │   ├── features/            # Feature modules with co-located business logic
 │   ├── components/          # Shared UI components
@@ -54,12 +52,14 @@ NoMercyLabs/
 │   ├── lib/                 # HTTP client, utilities
 │   ├── .env.development
 │   └── .env.production
-└── nomnomzbot-design/       # HTML mockups, research docs, architecture specs
+├── docker-compose.yml       # Root compose — references ./server and ./app
+├── deploy.sh
+├── deploy.ps1
+├── .env.example
+└── nomnomzbot-design/       # HTML mockups, research docs, architecture specs (separate repo)
     ├── mockups/             # HTML reference implementations of Figma designs
     └── research/            # Architecture decisions, API research, design system docs
 ```
-
-All three directories are git submodules inside the `NoMercyLabs` monorepo.
 
 ---
 
@@ -285,7 +285,7 @@ Use the `useBreakpoint()` hook — never hardcode pixel checks.
 ### Running the Frontend
 
 ```bash
-cd nomnomzbot-app
+cd app
 yarn install          # first time only
 yarn web              # opens http://localhost:8081
 yarn ios              # requires Xcode (macOS only)
@@ -420,7 +420,7 @@ A shared dev tunnel at `bot-dev-api.nomercy.tv` is pre-configured in `appsetting
 
 For local `dotnet run` dev (not Docker): put Twitch credentials in `appsettings.Development.json` instead. All other settings fall back to `appsettings.json` defaults.
 
-### Frontend — `nomnomzbot-app/.env.development`
+### Frontend — `app/.env.development`
 
 | Variable | Required | Description |
 |----------|----------|-------------|
@@ -562,4 +562,4 @@ After completion, lands on `/` (dashboard home).
 - Conventional commit messages preferred (`feat:`, `fix:`, `chore:`, etc.)
 - Main branch: `main`
 - Feature branches: `feat/description` or `fix/description`
-- Each submodule (`nomnomzbot`, `nomnomzbot-app`, `nomnomzbot-design`) has its own git history
+- All code lives in this monorepo (`server/` and `app/`)

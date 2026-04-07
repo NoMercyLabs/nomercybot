@@ -1,8 +1,0 @@
-[submodule "nomnomzbot-server"]
-	path = nomnomzbot-server
-	url = https://github.com/NoMercyLabs/nomnomzbot-server.git
-
-[submodule "nomnomzbot-app"]
-	path = nomnomzbot-app
-	url = https://github.com/NoMercyLabs/nomnomzbot-app.git
-
