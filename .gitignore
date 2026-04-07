@@ -2,14 +2,14 @@
 # (managed separately as independent repos)
 
 # Session artifacts and validation files
-VALIDATION_ISSUES.md
-VALIDATION_ISSUES_2.md
-REVALIDATION_RESULTS.md
-FINAL_VALIDATION.md
-TWITCH_API_AUDIT.md
-MOBILE_ROUTING_AUDIT.md
-EVENTSUB_REALTIME_AUDIT.md
-CLAUDE_RESUME.md
+*.md
+!README.md
+*.log
+*.json
+*.csv
+*.txt
+*.session
+*.validation
 
 # Screenshots (session artifacts)
 *.png
